@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<title>Retune</title>
+<meta name="description" content="Offline browser tool that changes the tempo and pitch of audio files, arranges clips on lanes and exports WAV.">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="topbar" id="topbar" hidden>
+  <span class="wordmark">Retune</span>
+  <label class="field">
+    <span>Project BPM</span>
+    <input id="project-bpm" type="number" inputmode="decimal" min="20" max="300" step="0.1" value="120">
+  </label>
+  <label class="field">
+    <span>Snap</span>
+    <select id="snap-mode">
+      <option value="bar">Bar</option>
+      <option value="beat" selected>Beat</option>
+      <option value="off">Off</option>
+    </select>
+  </label>
+  <label class="field">
+    <span>Ruler</span>
+    <select id="ruler-mode">
+      <option value="bars" selected>Bars and beats</option>
+      <option value="seconds">Minutes and seconds</option>
+    </select>
+  </label>
+</header>
+
+<main class="main" id="main">
+  <section class="hero" id="empty-state">
+    <h1>Change the tempo and pitch of an audio file, then arrange it</h1>
+    <p class="hero-sub">Retune is a browser tool for producers, DJs and editors. Drop a track, read its detected BPM, type the BPM or the pitch you want, layer clips on lanes, and export a WAV. Everything runs inside this page: no upload, no account, no network request.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" id="hero-pick" type="button">Choose my audio files</button>
+    </div>
+    <p class="hero-note">Or drop files anywhere on this window, or paste them from the clipboard.</p>
+    <div class="hero-visual">
+      <svg viewBox="0 0 640 200" role="img" aria-label="The Retune workspace: a bar ruler above two lanes, a clip on each lane showing its waveform and its tempo and pitch values, and a playhead.">
+        <rect x="0" y="0" width="640" height="28" fill="var(--color-surface)"/>
+        <g fill="var(--color-grid-strong)">
+          <rect x="8" y="10" width="1" height="18"/>
+          <rect x="168" y="10" width="1" height="18"/>
+          <rect x="328" y="10" width="1" height="18"/>
+          <rect x="488" y="10" width="1" height="18"/>
+        </g>
+        <g fill="var(--color-ruler-ink)" font-family="var(--font-system)" font-size="var(--type-xs)">
+          <text x="14" y="20">1</text>
+          <text x="174" y="20">5</text>
+          <text x="334" y="20">9</text>
+          <text x="494" y="20">13</text>
+        </g>
+        <rect x="0" y="28" width="640" height="84" fill="var(--color-lane-odd)"/>
+        <rect x="0" y="112" width="640" height="84" fill="var(--color-lane-even)"/>
+        <rect x="8" y="34" width="392" height="72" fill="var(--color-clip)" stroke="var(--color-clip-edge)"/>
+        <g fill="var(--color-clip-wave)">
+          <rect x="24" y="58" width="3" height="24"/><rect x="34" y="48" width="3" height="44"/>
+          <rect x="44" y="64" width="3" height="12"/><rect x="54" y="42" width="3" height="56"/>
+          <rect x="64" y="58" width="3" height="24"/><rect x="74" y="50" width="3" height="40"/>
+          <rect x="84" y="66" width="3" height="8"/><rect x="94" y="44" width="3" height="52"/>
+          <rect x="104" y="60" width="3" height="20"/><rect x="114" y="52" width="3" height="36"/>
+          <rect x="124" y="64" width="3" height="12"/><rect x="134" y="46" width="3" height="48"/>
+          <rect x="144" y="58" width="3" height="24"/><rect x="154" y="50" width="3" height="40"/>
+          <rect x="164" y="62" width="3" height="16"/><rect x="174" y="44" width="3" height="52"/>
+          <rect x="184" y="58" width="3" height="24"/><rect x="194" y="54" width="3" height="32"/>
+          <rect x="204" y="66" width="3" height="8"/><rect x="214" y="46" width="3" height="48"/>
+          <rect x="224" y="60" width="3" height="20"/><rect x="234" y="50" width="3" height="40"/>
+          <rect x="244" y="64" width="3" height="12"/><rect x="254" y="42" width="3" height="56"/>
+          <rect x="264" y="58" width="3" height="24"/><rect x="274" y="52" width="3" height="36"/>
+          <rect x="284" y="62" width="3" height="16"/><rect x="294" y="48" width="3" height="44"/>
+          <rect x="304" y="60" width="3" height="20"/><rect x="314" y="50" width="3" height="40"/>
+          <rect x="324" y="64" width="3" height="12"/><rect x="334" y="44" width="3" height="52"/>
+          <rect x="344" y="58" width="3" height="24"/><rect x="354" y="54" width="3" height="32"/>
+          <rect x="364" y="66" width="3" height="8"/><rect x="374" y="46" width="3" height="48"/>
+          <rect x="384" y="60" width="3" height="20"/>
+        </g>
+        <text x="16" y="48" fill="var(--color-ink)" font-family="var(--font-system)" font-size="var(--type-xs)" font-weight="600">drums.wav</text>
+        <text x="16" y="100" fill="var(--color-ink-muted)" font-family="var(--font-mono)" font-size="var(--type-xs)">124.0 BPM, +2 st</text>
+        <rect x="168" y="118" width="312" height="72" fill="var(--color-clip)" stroke="var(--color-clip-edge)"/>
+        <g fill="var(--color-clip-wave)">
+          <rect x="184" y="142" width="3" height="24"/><rect x="194" y="134" width="3" height="40"/>
+          <rect x="204" y="148" width="3" height="12"/><rect x="214" y="130" width="3" height="48"/>
+          <rect x="224" y="144" width="3" height="20"/><rect x="234" y="136" width="3" height="36"/>
+          <rect x="244" y="150" width="3" height="8"/><rect x="254" y="132" width="3" height="44"/>
+          <rect x="264" y="142" width="3" height="24"/><rect x="274" y="138" width="3" height="32"/>
+          <rect x="284" y="148" width="3" height="12"/><rect x="294" y="130" width="3" height="48"/>
+          <rect x="304" y="144" width="3" height="20"/><rect x="314" y="136" width="3" height="36"/>
+          <rect x="324" y="150" width="3" height="8"/><rect x="334" y="132" width="3" height="44"/>
+          <rect x="344" y="142" width="3" height="24"/><rect x="354" y="138" width="3" height="32"/>
+          <rect x="364" y="146" width="3" height="16"/><rect x="374" y="130" width="3" height="48"/>
+          <rect x="384" y="144" width="3" height="20"/><rect x="394" y="136" width="3" height="36"/>
+          <rect x="404" y="148" width="3" height="12"/><rect x="414" y="132" width="3" height="44"/>
+          <rect x="424" y="142" width="3" height="24"/><rect x="434" y="138" width="3" height="32"/>
+          <rect x="444" y="146" width="3" height="16"/><rect x="454" y="134" width="3" height="40"/>
+          <rect x="464" y="144" width="3" height="20"/>
+        </g>
+        <text x="176" y="132" fill="var(--color-ink)" font-family="var(--font-system)" font-size="var(--type-xs)" font-weight="600">vocal.m4a</text>
+        <text x="176" y="184" fill="var(--color-ink-muted)" font-family="var(--font-mono)" font-size="var(--type-xs)">124.0 BPM</text>
+        <rect x="240" y="0" width="2" height="200" fill="var(--color-playhead)"/>
+      </svg>
+    </div>
+    <div class="hero-steps">
+      <p>Detected BPM per file, with a manual override and tap tempo.</p>
+      <p>Tempo and pitch move independently, or together in linked mode.</p>
+      <p>Export the whole project, the selection range, or one file per lane.</p>
+    </div>
+  </section>
+
+  <section class="workspace" id="workspace" hidden>
+    <aside class="panel library" aria-labelledby="library-title">
+      <div class="panel-head">
+        <h2 id="library-title">Sources</h2>
+        <div class="row" id="library-actions"></div>
+      </div>
+      <ul class="library-list" id="library-list"></ul>
+      <section class="output" aria-labelledby="output-title">
+        <h3 id="output-title">Output</h3>
+        <label class="field">
+          <span>Export</span>
+          <select id="export-target">
+            <option value="project">Whole project</option>
+            <option value="selection">Selection range</option>
+            <option value="stems">One file per lane</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>WAV format</span>
+          <select id="export-depth">
+            <option value="16">16 bit PCM</option>
+            <option value="32">32 bit float</option>
+          </select>
+        </label>
+        <div class="row" id="output-actions"></div>
+      </section>
+    </aside>
+
+    <section class="panel timeline-panel" aria-labelledby="timeline-title">
+      <div class="panel-head">
+        <h2 id="timeline-title">Timeline</h2>
+        <div class="row" id="timeline-actions"></div>
+      </div>
+      <div class="timeline-body">
+        <div class="lane-headers" id="lane-headers"></div>
+        <div class="timeline-scroll" id="timeline-scroll">
+          <div class="timeline-stage" id="timeline-stage">
+            <canvas class="timeline-canvas" id="timeline-canvas" tabindex="0" role="img" aria-label="Timeline lanes with clips. Use the inspector fields and the arrow keys to move, trim and re-lane the selected clip."></canvas>
+            <div class="playhead" id="playhead"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel inspector" id="inspector" aria-labelledby="inspector-title">
+      <div class="panel-head">
+        <h2 id="inspector-title">Inspector</h2>
+      </div>
+      <div class="inspector-body" id="inspector-body"></div>
+    </aside>
+  </section>
+</main>
+
+<div class="footbar" id="footbar" hidden>
+  <div class="messages" id="messages" role="status" aria-live="polite"></div>
+  <div class="transport" id="transport" hidden>
+    <div class="row" id="transport-controls"></div>
+    <p class="transport-time" id="transport-time">0:00.00</p>
+    <div class="meter-wrap">
+      <canvas class="meter" id="meter" role="img" aria-label="Master output level in decibels"></canvas>
+      <span id="meter-value">off</span>
+    </div>
+  </div>
+</div>
+
+<div class="drop-veil" id="drop-veil" hidden aria-hidden="true">
+  <p>Drop audio files to load them</p>
+</div>
+
+<input class="visually-hidden" id="audio-input" type="file" multiple>
+<input class="visually-hidden" id="project-input" type="file">
+
+<script src="assets/js/namespace.js"></script>
+<script src="assets/js/icons.js"></script>
+<script src="assets/js/audio-engine.js"></script>
+<script src="assets/js/dsp-stretch.js"></script>
+<script src="assets/js/bpm-detect.js"></script>
+<script src="assets/js/waveform.js"></script>
+<script src="assets/js/timeline.js"></script>
+<script src="assets/js/inspector.js"></script>
+<script src="assets/js/transport.js"></script>
+<script src="assets/js/export-wav.js"></script>
+<script src="assets/js/project-io.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

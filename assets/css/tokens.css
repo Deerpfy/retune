@@ -1,0 +1,99 @@
+:root {
+  color-scheme: light;
+
+  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  --color-page: #f5f5f7;
+  --color-surface: #ffffff;
+  --color-sunken: #ececee;
+  --color-ink: #1d1d1f;
+  --color-ink-muted: #55555a;
+  --color-line: #d2d2d7;
+  --color-line-strong: #86868b;
+  --color-accent: #0071e3;
+  --color-accent-ink: #ffffff;
+  --color-accent-wash: #e6f0fc;
+  --color-danger: #96231c;
+  --color-danger-wash: #fbeeed;
+  --color-scrim: rgba(29, 29, 31, 0.62);
+
+  --color-wave: #3f3f45;
+  --color-wave-axis: #b8b8be;
+  --color-grid: #dcdce0;
+  --color-grid-strong: #8e8e94;
+  --color-ruler-ink: #55555a;
+  --color-lane-odd: #fbfbfc;
+  --color-lane-even: #f2f2f4;
+  --color-clip: #dcebfb;
+  --color-clip-selected: #c2ddf8;
+  --color-clip-edge: #1b5fa8;
+  --color-clip-wave: #4d7fae;
+  --color-clip-pending: #efe3d6;
+  --color-clip-pending-edge: #9a6a2e;
+  --color-playhead: #96231c;
+  --color-marker: #1b5fa8;
+  --color-meter: #3f3f45;
+  --color-meter-peak: #96231c;
+  --color-meter-track: #e2e2e6;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  --radius-s: 6px;
+  --radius-m: 12px;
+  --radius-pill: 999px;
+
+  --line-width: 1px;
+  --line-width-strong: 2px;
+  --focus-width: 2px;
+  --focus-offset: 2px;
+
+  --type-xs: 11px;
+  --type-s: 13px;
+  --type-m: 15px;
+  --type-l: 20px;
+  --type-hero: 28px;
+  --leading-tight: 1.2;
+  --leading-body: 1.5;
+  --tracking-tight: -0.01em;
+  --tracking-wide: 0.04em;
+
+  --target-min: 24px;
+  --target-touch: 44px;
+  --edge-gesture: 16px;
+
+  --duration-fast: 120ms;
+  --duration-base: 220ms;
+  --message-timeout: 6000ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  --lane-height: 76px;
+  --ruler-height: 30px;
+  --lane-gutter: 128px;
+  --panel-width: 296px;
+  --meter-height: 10px;
+  --hero-max: 44rem;
+  --page-max: 1680px;
+  --clip-edge-grab: 10px;
+  --waveform-height: 64px;
+  --messages-max-height: 168px;
+}
+
+@media (min-width: 600px) {
+  :root {
+    --type-hero: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+  }
+}
